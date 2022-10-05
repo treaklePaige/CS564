@@ -76,62 +76,13 @@ of the necessary SQL tables for your database.
 def parseJson(json_file):
     with open(json_file, 'r') as f:
         items = loads(f.read())['Items'] # creates a Python dictionary of Items for the supplied json file
-        ItemDB = open("Items.dat", 'a')
-        CategoryDB = open("Categories.dat", 'a')
-        BidDB = open("Bids.dat", 'a')
-        UserDB = open("EbayUsers.dat", 'a')
-
-        # Starting by creating a local value of all of the attributes in items that 
-        # we are going to need right away
         for item in items:
-            ItemID = item['ItemID']
-            Name = item['Name']
-            Description = item['Description']
-            Currently = transformDollar(item['Currently'])
-            NumBids = item['Number_of_Bids']
-            FirstBid = transformDollar(item['First_Bid'])
-            BuyPrice = transformDollar(item.get('Buy_Price', 'NULL'))
-            Started = transformDttm(item['Started'])
-            Ends = transformDttm(item['Ends'])
-            SellingUser = item['Seller']
-            SellID = SellingUser['UserID']
-            Rating = SellingUser['Rating']
-            Location = item.get('Location', 'NULL')
-            Country = item.get('Buy_Price', 'NULL')
-            Categories = item['Category']
-            Bids = item["Bids"]
-           
-        #Load into the files
-        #Item File Data Loading:
-        AddToItem = "" + ItemID + "|" + SellID + "|" + Rating + "|" + Description + "|" + Currently + "|" + NumBids + "|" + FirstBid + "|" + BuyPrice + "|" + Started + "|" + Ends
-        ItemDB.write(AddToItem)
-        
-        #Category File Data Loading
-        for cat in Categories:
-            AddToCat = ('"' + ItemID + '"|"' +str(cat)+ '"\n')  
-            CategoryDB.write(AddToCat)
-            
-        #Bid File Data Loading (since already parsing bids, also adding bidders to userDB)
-        if item["Bids"] is not None:
-            for i in range(len(Bids)):
-                thisBid = Bids[i]["Bid"]
-                AddToBids = ('"' + ItemID + '"|"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Time"] + '"|"' + thisBid.get("amount", 'NULL') + '"\n')
-                BidDB.write(AddToBids)
-                AddtoPeople = ('"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Bidder"]["UserID"] + '"|"' + Location + '"|"' + Country + '"\n')
-                UserDB.write(AddtoPeople)
-            
-        
-        #User file Data Loading this is for sellers because we already covered bidders
-        AddtoPep = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
-        UserDB.write(AddtoPep)
-            
-            
-        ItemDB.close()
-        CategoryDB.close()
-        BidDB.close()
-        UserDB.close()
-            
-            
+            """
+            TODO: traverse the items dictionary to extract information from the
+            given `json_file' and generate the necessary .dat files to generate
+            the SQL tables based on your relation design
+            """
+            pass
 
 """
 Loops through each json files provided on the command line and passes each file
@@ -139,13 +90,13 @@ to the parser
 """
 def main(argv):
     if len(argv) < 2:
-        print >> sys.stderr, 'Usage: python parser.py <path to json files>'
+        print >> sys.stderr, 'Usage: python skeleton_json_parser.py <path to json files>'
         sys.exit(1)
     # loops over all .json files in the argument
     for f in argv[1:]:
         if isJson(f):
             parseJson(f)
-            print("Success parsing " + f)
+            print "Success parsing " + f
 
 if __name__ == '__main__':
     main(sys.argv)

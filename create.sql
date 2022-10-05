@@ -1,4 +1,3 @@
-%%sql
 drop table if exists Items;
 drop table if exists EbayUsers;
 drop table if exists Categories;
