@@ -81,6 +81,10 @@ def parseJson(json_file):
         BidDB = open("Bids.dat", 'a')
         BuyerDB = open("Buyer.dat", 'a')
         SellerDB = open("Seller.dat", 'a')
+        
+        sellersList = []
+        biddersList = []
+        catList = []
 
         # Starting by creating a local value of all of the attributes in items that 
         # we are going to need right away
@@ -109,8 +113,11 @@ def parseJson(json_file):
         
         #Category File Data Loading
         for cat in Categories:
-            AddToCat = ('"' + ItemID + '"|"' +str(cat)+ '"\n')  
-            CategoryDB.write(AddToCat)
+            checkCat = [ItemID, str(cat)]
+            if checkCat not in catList:
+                AddToCat = ('"' + ItemID + '"|"' +str(cat)+ '"\n')  
+                CategoryDB.write(AddToCat)
+                catList.append(checkCat)
             
         #Bid File Data Loading (since already parsing bids, also adding bidders to userDB)
         if item["Bids"] is not None:
@@ -118,13 +125,17 @@ def parseJson(json_file):
                 thisBid = Bids[i]["Bid"]
                 AddToBids = ('"' + ItemID + '"|"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Time"] + '"|"' + thisBid.get("amount", 'NULL') + '"\n')
                 BidDB.write(AddToBids)
-                AddToBidder = ('"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Bidder"]["Rating"] + '"|"' + Location + '"|"' + Country + '"\n')
-                BuyerDB.write(AddToBidder)
+                if thisBid["Bidder"]["UserID"] not in biddersList:
+                    AddToBidder = ('"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Bidder"]["Rating"] + '"|"' + Location + '"|"' + Country + '"\n')
+                    BuyerDB.write(AddToBidder)
+                    biddersList.append(thisBid["Bidder"]["UserID"])
             
         
         #User file Data Loading this is for sellers because we already covered bidders
-        AddtoSeller = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
-        SellerDB.write(AddtoSeller)
+        if SellID not in sellersList:
+            AddtoSeller = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
+            SellerDB.write(AddtoSeller)
+            sellersList.append(SellID)
             
             
         ItemDB.close()
