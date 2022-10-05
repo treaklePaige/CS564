@@ -79,7 +79,8 @@ def parseJson(json_file):
         ItemDB = open("Items.dat", 'a')
         CategoryDB = open("Categories.dat", 'a')
         BidDB = open("Bids.dat", 'a')
-        UserDB = open("EbayUsers.dat", 'a')
+        BuyerDB = open("Buyer.dat", 'a')
+        SellerDB = open("Seller.dat", 'a')
 
         # Starting by creating a local value of all of the attributes in items that 
         # we are going to need right away
@@ -93,13 +94,13 @@ def parseJson(json_file):
             BuyPrice = transformDollar(item.get('Buy_Price', 'NULL'))
             Started = transformDttm(item['Started'])
             Ends = transformDttm(item['Ends'])
-            SellingUser = item['Seller']
-            SellID = SellingUser['UserID']
-            Rating = SellingUser['Rating']
             Location = item.get('Location', 'NULL')
             Country = item.get('Buy_Price', 'NULL')
             Categories = item['Category']
             Bids = item["Bids"]
+            SellingUser = item['Seller']
+            SellID = SellingUser['UserID']
+            Rating = SellingUser['Rating']
            
         #Load into the files
         #Item File Data Loading:
@@ -117,19 +118,20 @@ def parseJson(json_file):
                 thisBid = Bids[i]["Bid"]
                 AddToBids = ('"' + ItemID + '"|"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Time"] + '"|"' + thisBid.get("amount", 'NULL') + '"\n')
                 BidDB.write(AddToBids)
-                AddtoPeople = ('"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Bidder"]["UserID"] + '"|"' + Location + '"|"' + Country + '"\n')
-                UserDB.write(AddtoPeople)
+                AddToBidder = ('"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Bidder"]["Rating"] + '"|"' + Location + '"|"' + Country + '"\n')
+                BuyerDB.write(AddToBidder)
             
         
         #User file Data Loading this is for sellers because we already covered bidders
-        AddtoPep = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
-        UserDB.write(AddtoPep)
+        AddtoSeller = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
+        SellerDB.write(AddtoSeller)
             
             
         ItemDB.close()
         CategoryDB.close()
         BidDB.close()
-        UserDB.close()
+        BuyerDB.close()
+        SellerDB.close()
             
             
 
