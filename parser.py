@@ -76,11 +76,11 @@ of the necessary SQL tables for your database.
 def parseJson(json_file):
     with open(json_file, 'r') as f:
         items = loads(f.read())['Items'] # creates a Python dictionary of Items for the supplied json file
-        ItemDB = open("Items.dat", 'a')
-        CategoryDB = open("Categories.dat", 'a')
-        BidDB = open("Bids.dat", 'a')
-        BuyerDB = open("Buyer.dat", 'a')
-        SellerDB = open("Seller.dat", 'a')
+        ItemDB = open("Items.dat", 'w')
+        CategoryDB = open("Categories.dat", 'w')
+        BidDB = open("Bids.dat", 'w')
+        BuyerDB = open("Bidders.dat", 'w')
+        SellerDB = open("Sellers.dat", 'w')
         
         sellersList = []
         biddersList = []
