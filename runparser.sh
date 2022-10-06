@@ -1,5 +1,5 @@
 JSON_DIR="./ebay_data"
-SCRIPT_PATH="./TransformationJson.py"
+SCRIPT_PATH="./parser.py"
 CATEGORY_TB="./Categories.dat"
 ITEMS_TB="./Items.dat"
 BIDS_TB="./Bids.dat"
