@@ -76,11 +76,11 @@ of the necessary SQL tables for your database.
 def parseJson(json_file):
     with open(json_file, 'r') as f:
         items = loads(f.read())['Items'] # creates a Python dictionary of Items for the supplied json file
-        ItemDB = open("Items.dat", 'a')
-        CategoryDB = open("Categories.dat", 'a')
-        BidDB = open("Bids.dat", 'a')
-        BuyerDB = open("Bidders.dat", 'a')
-        SellerDB = open("Sellers.dat", 'a')
+        ItemDB = open("ItemsWithDuplicates.dat", 'a')
+        CategoryDB = open("CategoriesWithDuplicates.dat", 'a')
+        BidDB = open("BidsWithDuplicates.dat", 'a')
+        BuyerDB = open("BiddersWithDuplicates.dat", 'a')
+        SellerDB = open("SellersWithDuplicates.dat", 'a')
         
         sellersList = []
         biddersList = []
@@ -90,8 +90,8 @@ def parseJson(json_file):
         # we are going to need right away
         for item in items:
             ItemID = item['ItemID']
-            Name = item['Name']
-            Description = item['Description']
+            Name = item['Name'].replace('"', '""')
+            Description = item['Description'].replace('"', '""') if item['Description'] is not None else ""
             Currently = transformDollar(item['Currently'])
             NumBids = item['Number_of_Bids']
             FirstBid = transformDollar(item['First_Bid'])
@@ -99,16 +99,17 @@ def parseJson(json_file):
             Started = transformDttm(item['Started'])
             Ends = transformDttm(item['Ends'])
             Location = item.get('Location', 'NULL')
-            Country = item.get('Buy_Price', 'NULL')
+            Country = item.get('Country', 'NULL')
             Categories = item['Category']
             Bids = item["Bids"]
             SellingUser = item['Seller']
             SellID = SellingUser['UserID']
             Rating = SellingUser['Rating']
-           
+
             #Load into the files
             #Item File Data Loading:
-            AddToItem = ("" + ItemID + "|" + SellID + "|" + Name + "|" + Description + "|" + Currently + "|" + NumBids + "|" + FirstBid + "|" + BuyPrice + "|" + Started + "|" + Ends  + '"\n')
+            # AddToItem = ItemID + "|" + SellID + "|" + Name + "|" + Description + "|" + Currently + "|" + NumBids + "|" + FirstBid + "|" + BuyPrice + "|" + Started + "|" + Ends  + "\n"
+            AddToItem = '"' + '|'.join([ItemID, SellID, Name, Description, Currently, NumBids, FirstBid, BuyPrice, Started, Ends]) + '"\n'
             ItemDB.write(AddToItem)
             
             #Category File Data Loading
