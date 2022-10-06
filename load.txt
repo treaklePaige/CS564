@@ -2,7 +2,11 @@
 .import items.dat Items
 update Items set Buy_Price = null where Buy_Price = 'NULL';
 
-.import ebayUsers.dat EbayUsers
+.import bidders.dat Bidders
+update Items set Country = null where Country = 'NULL';
+update Items set Location = null where Location = 'NULL';
+
+.import sellers.dat Sellers
 update Items set Country = null where Country = 'NULL';
 update Items set Location = null where Location = 'NULL';
 
