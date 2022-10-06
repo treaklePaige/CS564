@@ -1,16 +1,16 @@
-CS 564: Database Management Systems
+# CS 564: Database Management Systems
 
-HW2: Entity Relationship Modeling & Schema Design
+## HW2: Entity Relationship Modeling & Schema Design
 
-Oct. 7, 2022
+### Oct. 7, 2022
 
-Ariel Rezin, Anjali Gali, & Paige Treakle
+### Ariel Rezin, Anjali Gali, & Paige Treakle
 
 To parse data AND load it into the database
 
 - Run `make` in the command line
 
-To test queries 1 to 7
+To test queries 1 through 7
 
 - Run `make test` in the command line
 
