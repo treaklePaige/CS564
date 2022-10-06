@@ -4,18 +4,18 @@ drop table if exists Sellers;
 drop table if exists Categories;
 drop table if exists Bids;
 
-create table Bidders(BidderID         VARCHAR(300)   NOT NULL  PRIMARY KEY,
-                      BidderRating         INTEGER         NOT NULL,
-                      Country        VARCHAR(300),   
-                      Location       VARCHAR(300)
+create table Bidders(BidderID        VARCHAR(300)    NOT NULL  PRIMARY KEY,
+                      BidderRating   INTEGER         NOT NULL,
+                      Location       VARCHAR(300),
+                      Country        VARCHAR(300)
                     );
-create table Sellers(SellerID         VARCHAR(300)   NOT NULL  PRIMARY KEY,
-                      SellerRating         INTEGER         NOT NULL,
-                      Country        VARCHAR(300), 
-                      Location       VARCHAR(300)  
+create table Sellers(SellerID        VARCHAR(300)   NOT NULL  PRIMARY KEY,
+                      SellerRating   INTEGER         NOT NULL,
+                      Location       VARCHAR(300),
+                      Country        VARCHAR(300)
                     );
 create table Items(ItemID            INTEGER        NOT NULL  PRIMARY KEY,
-                   SellerID         VARCHAR(300)   NOT NULL,
+                   SellerID          VARCHAR(300)   NOT NULL,
                    Name              VARCHAR(300)   NOT NULL,
                    Description       VARCHAR(500)   NOT NULL,
                    Currently         VARCHAR(300)   NOT NULL,
@@ -26,8 +26,8 @@ create table Items(ItemID            INTEGER        NOT NULL  PRIMARY KEY,
                    Ends              TIMESTAMP      NOT NULL,
                    FOREIGN KEY (SellerID) REFERENCES Sellers(SellerID)
                   );
-create table Categories(CategoryName VARCHAR(300)   NOT NULL,
-                        ItemID       INTEGER        NOT NULL,
+create table Categories(ItemID       INTEGER        NOT NULL,
+                        CategoryName VARCHAR(300)   NOT NULL,
                         FOREIGN KEY (ItemID) REFERENCES Items(ItemID),
                         PRIMARY KEY(ItemID, CategoryName)
                     );
