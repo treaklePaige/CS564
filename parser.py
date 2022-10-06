@@ -108,7 +108,7 @@ def parseJson(json_file):
            
         #Load into the files
         #Item File Data Loading:
-        AddToItem = "" + ItemID + "|" + SellID + "|" + Rating + "|" + Name + "|" + Description + "|" + Currently + "|" + NumBids + "|" + FirstBid + "|" + BuyPrice + "|" + Started + "|" + Ends  + '"\n')
+        AddToItem = "" + ItemID + "|" + SellID + "|" + Name + "|" + Description + "|" + Currently + "|" + NumBids + "|" + FirstBid + "|" + BuyPrice + "|" + Started + "|" + Ends  + '"\n')
         ItemDB.write(AddToItem)
         
         #Category File Data Loading
