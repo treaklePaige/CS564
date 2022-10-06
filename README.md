@@ -3,8 +3,13 @@ HW2: Entity Relationship Modeling & Schema Design
 Oct. 7, 2022
 
 To parse data AND load it into the database
-Run `make` in the command line
+
+- Run `make` in the command line
+
 To test queries 1 to 7
-Run `make test` in the command line
+
+- Run `make test` in the command line
+
 To just parse .json files into .dat files
-Run `sh runParser.sh` in the command line
+
+- Run `sh runParser.sh` in the command line
