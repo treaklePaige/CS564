@@ -1,6 +1,6 @@
-# CS 564: Database Management Systems
+# HW2: Entity Relationship Modeling & Schema Design
 
-HW2: Entity Relationship Modeling & Schema Design
+For CS 564 Database Management Systems
 
 Ariel Rezin, Anjali Gali, & Paige Treakle
 
