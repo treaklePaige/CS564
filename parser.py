@@ -106,36 +106,36 @@ def parseJson(json_file):
             SellID = SellingUser['UserID']
             Rating = SellingUser['Rating']
            
-        #Load into the files
-        #Item File Data Loading:
-        AddToItem = ("" + ItemID + "|" + SellID + "|" + Name + "|" + Description + "|" + Currently + "|" + NumBids + "|" + FirstBid + "|" + BuyPrice + "|" + Started + "|" + Ends  + '"\n')
-        ItemDB.write(AddToItem)
-        
-        #Category File Data Loading
-        for cat in Categories:
-            checkCat = [ItemID, str(cat)]
-            if checkCat not in catList:
-                AddToCat = ('"' + ItemID + '"|"' +str(cat)+ '"\n')  
-                CategoryDB.write(AddToCat)
-                catList.append(checkCat)
+            #Load into the files
+            #Item File Data Loading:
+            AddToItem = ("" + ItemID + "|" + SellID + "|" + Name + "|" + Description + "|" + Currently + "|" + NumBids + "|" + FirstBid + "|" + BuyPrice + "|" + Started + "|" + Ends  + '"\n')
+            ItemDB.write(AddToItem)
             
-        #Bid File Data Loading (since already parsing bids, also adding bidders to userDB)
-        if item["Bids"] is not None:
-            for i in range(len(Bids)):
-                thisBid = Bids[i]["Bid"]
-                AddToBids = ('"' + ItemID + '"|"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Time"] + '"|"' + thisBid.get("amount", 'NULL') + '"\n')
-                BidDB.write(AddToBids)
-                if thisBid["Bidder"]["UserID"] not in biddersList:
-                    AddToBidder = ('"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Bidder"]["Rating"] + '"|"' + Location + '"|"' + Country + '"\n')
-                    BuyerDB.write(AddToBidder)
-                    biddersList.append(thisBid["Bidder"]["UserID"])
+            #Category File Data Loading
+            for cat in Categories:
+                checkCat = [ItemID, str(cat)]
+                if checkCat not in catList:
+                    AddToCat = ('"' + ItemID + '"|"' +str(cat)+ '"\n')  
+                    CategoryDB.write(AddToCat)
+                    catList.append(checkCat)
+                
+            #Bid File Data Loading (since already parsing bids, also adding bidders to userDB)
+            if item["Bids"] is not None:
+                for i in range(len(Bids)):
+                    thisBid = Bids[i]["Bid"]
+                    AddToBids = ('"' + ItemID + '"|"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Time"] + '"|"' + thisBid.get("amount", 'NULL') + '"\n')
+                    BidDB.write(AddToBids)
+                    if thisBid["Bidder"]["UserID"] not in biddersList:
+                        AddToBidder = ('"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Bidder"]["Rating"] + '"|"' + Location + '"|"' + Country + '"\n')
+                        BuyerDB.write(AddToBidder)
+                        biddersList.append(thisBid["Bidder"]["UserID"])
+                
             
-        
-        #User file Data Loading this is for sellers because we already covered bidders
-        if SellID not in sellersList:
-            AddtoSeller = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
-            SellerDB.write(AddtoSeller)
-            sellersList.append(SellID)
+            #User file Data Loading this is for sellers because we already covered bidders
+            if SellID not in sellersList:
+                AddtoSeller = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
+                SellerDB.write(AddtoSeller)
+                sellersList.append(SellID)
             
             
         ItemDB.close()
