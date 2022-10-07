@@ -1,2 +1,2 @@
-SELECT COUNT(Bidders.BidderID + Sellers.SellerID)
+SELECT DISTINCT COUNT(Bidders.BidderID + Sellers.SellerID)
 FROM Bidders, Sellers;

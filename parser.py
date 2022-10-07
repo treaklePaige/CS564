@@ -29,6 +29,10 @@ from json import loads
 from re import sub
 
 columnSeparator = "|"
+alreadyAddedBidderIDs = []
+alreadyAddedSellerIDs = []
+Quote = '"'
+
 
 # Dictionary of months used for date transformation
 MONTHS = {'Jan':'01','Feb':'02','Mar':'03','Apr':'04','May':'05','Jun':'06',\
@@ -82,9 +86,6 @@ def parseJson(json_file):
         BuyerDB = open("BiddersWithDuplicates.dat", 'a')
         SellerDB = open("SellersWithDuplicates.dat", 'a')
         
-        Quote = '"'
-        alreadyAddedBidderIDs = []
-
         # Starting by creating a local value of all of the attributes in items that 
         # we are going to need right away
         for item in items:
@@ -121,20 +122,22 @@ def parseJson(json_file):
                 for i in range(len(Bids)):
                     thisBid = Bids[i]["Bid"]
 
-                    AddToBids = '|'.join([ItemID, Quote+thisBid["Bidder"]["UserID"]+Quote, thisBid["Time"], thisBid.get("Amount")]) + '\n'
+                    AddToBids = '|'.join([ItemID, Quote+thisBid["Bidder"]["UserID"]+Quote, transformDttm(thisBid["Time"]), transformDollar(thisBid.get("Amount"))]) + '\n'
                     BidDB.write(AddToBids)
 
                     thisBidUserID = thisBid["Bidder"]["UserID"]
                     if thisBidUserID not in alreadyAddedBidderIDs:
+                        alreadyAddedBidderIDs.append(thisBidUserID)
                         AddToBidder = '|'.join([Quote+thisBid["Bidder"]["UserID"]+Quote, thisBid["Bidder"]["Rating"], Quote+Location+Quote, Quote+Country+Quote]) + '\n'
                         BuyerDB.write(AddToBidder)
                         
                 
             
             #User file Data Loading this is for sellers because we already covered bidders
-            # AddtoSeller = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
-            AddtoSeller = '|'.join([Quote+SellID+Quote, Rating, Quote+Location+Quote, Quote+Country+Quote]) + '\n'
-            SellerDB.write(AddtoSeller)
+            if SellID not in alreadyAddedSellerIDs:
+                alreadyAddedSellerIDs.append(SellID)
+                AddtoSeller = '|'.join([Quote+SellID+Quote, Rating, Quote+Location+Quote, Quote+Country+Quote]) + '\n'
+                SellerDB.write(AddtoSeller)
     
             
             
