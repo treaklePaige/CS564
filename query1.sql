@@ -1,1 +1,8 @@
-SELECT C1.A+C2.B-C3.C FROM (SELECT COUNT(*) AS A FROM SELLER) AS C1, (SELECT COUNT(*) AS B FROM BIDDER) AS C2, (SELECT COUNT(*) AS C FROM BIDDER,SELLER WHERE BIDDER.USERID = SELLER.USERID) AS C3;
+SELECT 
+    Num1.NumberOfSellers
+  + Num2.NumberOfBidders
+  - Num3.NumberOfUsersThatAreBiddersAndSellers 
+FROM 
+  (SELECT COUNT(*) AS NumberOfSellers FROM Sellers) AS Num1, 
+  (SELECT COUNT(*) AS NumberOfBidders FROM Bidders) AS Num2, 
+  (SELECT COUNT(*) AS NumberOfUsersThatAreBiddersAndSellers FROM Bidders,Sellers WHERE Bidders.BidderID = Sellers.SellerID) AS Num3;
