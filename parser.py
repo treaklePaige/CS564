@@ -51,7 +51,7 @@ def transformMonth(mon):
 
 """
 Transforms a timestamp from Mon-DD-YY HH:MM:SS to YYYY-MM-DD HH:MM:SS
-"""
+""" 
 def transformDttm(dttm):
     dttm = dttm.strip().split(' ')
     dt = dttm[0].split('-')
@@ -82,9 +82,8 @@ def parseJson(json_file):
         BuyerDB = open("BiddersWithDuplicates.dat", 'a')
         SellerDB = open("SellersWithDuplicates.dat", 'a')
         
-        sellersList = []
-        biddersList = []
-        catList = []
+        Quote = '"'
+        alreadyAddedBidderIDs = []
 
         # Starting by creating a local value of all of the attributes in items that 
         # we are going to need right away
@@ -98,7 +97,7 @@ def parseJson(json_file):
             BuyPrice = transformDollar(item.get('Buy_Price', 'NULL'))
             Started = transformDttm(item['Started'])
             Ends = transformDttm(item['Ends'])
-            Location = item.get('Location', 'NULL')
+            Location = item.get('Location', 'NULL').replace('"', '""') if item.get('Location', 'NULL') is not None else ""
             Country = item.get('Country', 'NULL')
             Categories = item['Category']
             Bids = item["Bids"]
@@ -108,35 +107,35 @@ def parseJson(json_file):
 
             #Load into the files
             #Item File Data Loading:
-            # AddToItem = ItemID + "|" + SellID + "|" + Name + "|" + Description + "|" + Currently + "|" + NumBids + "|" + FirstBid + "|" + BuyPrice + "|" + Started + "|" + Ends  + "\n"
-            AddToItem = '"' + '|'.join([ItemID, SellID, Name, Description, Currently, NumBids, FirstBid, BuyPrice, Started, Ends]) + '"\n'
+            AddToItem = '|'.join([ItemID, Quote+SellID+Quote, Quote+Name+Quote, Quote+Description+Quote, Currently, NumBids, FirstBid, BuyPrice, Started, Ends]) + '\n'
             ItemDB.write(AddToItem)
             
             #Category File Data Loading
             for cat in Categories:
-                checkCat = [ItemID, str(cat)]
-                if checkCat not in catList:
-                    AddToCat = ('"' + ItemID + '"|"' +str(cat)+ '"\n')  
-                    CategoryDB.write(AddToCat)
-                    catList.append(checkCat)
+                # AddToCat = ('"' + ItemID + '"|"' +str(cat)+ '"\n') 
+                AddToCat = '|'.join([ItemID, Quote+str(cat)+Quote]) + '\n' 
+                CategoryDB.write(AddToCat)
                 
             #Bid File Data Loading (since already parsing bids, also adding bidders to userDB)
             if item["Bids"] is not None:
                 for i in range(len(Bids)):
                     thisBid = Bids[i]["Bid"]
-                    AddToBids = ('"' + ItemID + '"|"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Time"] + '"|"' + thisBid.get("amount", 'NULL') + '"\n')
+
+                    AddToBids = '|'.join([ItemID, Quote+thisBid["Bidder"]["UserID"]+Quote, thisBid["Time"], thisBid.get("Amount")]) + '\n'
                     BidDB.write(AddToBids)
-                    if thisBid["Bidder"]["UserID"] not in biddersList:
-                        AddToBidder = ('"' + thisBid["Bidder"]["UserID"] + '"|"' + thisBid["Bidder"]["Rating"] + '"|"' + Location + '"|"' + Country + '"\n')
+
+                    thisBidUserID = thisBid["Bidder"]["UserID"]
+                    if thisBidUserID not in alreadyAddedBidderIDs:
+                        AddToBidder = '|'.join([Quote+thisBid["Bidder"]["UserID"]+Quote, thisBid["Bidder"]["Rating"], Quote+Location+Quote, Quote+Country+Quote]) + '\n'
                         BuyerDB.write(AddToBidder)
-                        biddersList.append(thisBid["Bidder"]["UserID"])
+                        
                 
             
             #User file Data Loading this is for sellers because we already covered bidders
-            if SellID not in sellersList:
-                AddtoSeller = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
-                SellerDB.write(AddtoSeller)
-                sellersList.append(SellID)
+            # AddtoSeller = ('"' + SellID + '"|"' + Rating + '"|"' + Location + '"|"' + Country + '"\n')
+            AddtoSeller = '|'.join([Quote+SellID+Quote, Rating, Quote+Location+Quote, Quote+Country+Quote]) + '\n'
+            SellerDB.write(AddtoSeller)
+    
             
             
         ItemDB.close()
