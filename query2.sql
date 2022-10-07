@@ -1,3 +1,9 @@
-SELECT COUNT(Bidders.BidderID + Sellers.SellerID)
-FROM Bidders, Sellers
-WHERE Bidders.Location = "New York" AND Sellers.Location = "New York";
+WITH S AS (SELECT (Bidders.BidderID) UserID
+            FROM Bidders
+            WHERE Bidders.Country = "New York"
+            UNION ALL
+            SELECT (Sellers.SellerID) UserID
+            FROM Sellers
+            WHERE Sellers.Location = "New York")
+SELECT COUNT(DISTINCT UserID)
+FROM S;

@@ -1,3 +1,6 @@
-SELECT COUNT(ItemID)
-FROM Items
-WHERE Number_of_Bids = 4;
+WITH F AS (SELECT COUNT(CategoryName) CategoryNum
+    FROM Categories
+    GROUP BY ItemID)
+SELECT COUNT(F.CategoryNum)
+FROM F
+WHERE F.CategoryNum = 4;

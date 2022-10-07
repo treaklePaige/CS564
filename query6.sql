@@ -1,3 +1,3 @@
-SELECT COUNT(Sellers.SellerID SellerAndBidder)
+SELECT COUNT(Sellers.SellerID) SellerAndBidder
 FROM Sellers, Bidders
 WHERE (Sellers.SellerID = Bidders.BidderID);
