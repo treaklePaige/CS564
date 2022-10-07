@@ -16,7 +16,11 @@ Run `make test` in the command line
 
 ### To just parse .json files into .dat files
 
-Run `sh runParser.sh` in the command line
+Copy and paste the contents of runParser.sh into your Unix-based command line, then hit enter
+
+** OR **
+
+Run `sh runParser.sh` in the command line <sub>(note: this doesn't always work!!)</sub>
 
 ### To just create a database named ebay.db and its tables
 
